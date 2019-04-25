@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <routing-view @myFavorite="myFavorite"/>
+    <router-view @myFavorite="myFavorite" @counter="counterData"/>
   </div>
 </template>
 
@@ -31,41 +31,38 @@ import User from '@/components/User.vue'
 
 export default {
   name: 'home',
-
   data () {
     return {
-      isLoading: true
+      isLoading: true,
+      counter: 0
     }
   },
-
   components: {
     User
   },
-
   methods: {
     fetchUser () {
       this.$store.dispatch('fetchUsers')
     },
-
     seeProject (id) {
       this.$router.push(`/${id}`)
     },
-
     myFavorite (data) {
       this.$emit('myFavorite', data)
+    },
+    counterData (data) {
+      this.counter = data
+      this.$emit('counter', this.counter)
     }
   },
-
   computed: {
     users () {
       return this.$store.state.users
     }
   },
-
   mounted () {
-    this.fetchUser().then(data => {
-      this.isLoading = false
-    })
+    this.fetchUser()
+      
   }
 }
 </script>

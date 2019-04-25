@@ -9,9 +9,10 @@ module.exports = {
     return status;
   },
   generateNum: function(digit) {
-    if(digit > 0) {
-      this.generateNum(digit - 1) + Math.floor(Math.random() * 10);
+    if(digit > 0 ) {
+      digit = this.generateNum(digit - 1) + Math.floor(100000 + Math.random() * 90000);
     }
-    return '';
+  
+    return digit;
   }
 }

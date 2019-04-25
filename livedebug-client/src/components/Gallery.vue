@@ -22,7 +22,7 @@ export default {
   computed: {
     coverUrl () {
       return {
-        'background-image': `url('${this.covers['original']}')`
+        'background-image': `url('${this.$store.state.projects.data.projects.covers.original}')`
       }
     }
   }

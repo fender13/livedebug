@@ -19,7 +19,7 @@ export default new Router({
       component: Home,
       children: [
         {
-          path: ':behanceId',
+          path: '/:behanceId',
           name: 'User Gallery',
           component: UserGallery
         }

@@ -2,11 +2,13 @@ const Transaction = require('../models/transaction');
 
 class TransactionController {
   static transfer(req, res) {
-    Transaction.create({
+    let data = {
       amount: req.body.amount,
       from: req.transferFromId,
       to: req.transferToId
-    })
+    }
+
+    Transaction.create(data)
     .then(success => {
       Transaction.find({
         _id: success._id

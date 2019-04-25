@@ -38,12 +38,12 @@ import Gallery from "@/components/Gallery.vue";
 
 export default {
   props: ["favorites"],
-
+  name: 'favorite',
   components: {
     Gallery
   },
 
-  mounted() {}
+  // mounted() {}
 };
 </script>
 

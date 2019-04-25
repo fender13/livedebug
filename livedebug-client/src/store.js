@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from './helpers/axios'
 
+Vue.use(Vuex);
+
 export default new Vuex.Store({
   state: {
     users: '',
@@ -36,19 +38,16 @@ export default new Vuex.Store({
         context.commit('setUsers', data)
       })
     },
-
     fetchProject (context, id) {
       return axios.get(`/projects/${id}`).then(({ data }) => {
         context.commit('setProjects', { data })
       })
     },
-
     findCollections (context, query) {
       return axios.get(`/collections/?q=${query}`).then(({ data }) => {
         context.commit('setCollections', data)
       })
     },
-
     cleanCollection (context) {
       context.commit('cleanCollection')
     }

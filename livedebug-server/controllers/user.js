@@ -10,65 +10,68 @@ class UserController {
     };
 
     User.create(user)
-    .then(user => {
-      res.status(201).json(user);
-    })
-    .catch(err => {
-      if (err.errors.email) {
-        res.status(409).json({ err: err.errors.email.reason });
-      } else if(err.errors.password) {
-        res.status(409).json({ err: err.errors.password.message });
-      } else {
-        res.status(500).json(err);
-      }
-    })
+      .then(user => {
+        res.status(201).json(user);
+      })
+      .catch(err => {
+        if (err.errors.email) {
+          res.status(409).json({ err: err.errors.email.reason });
+        } else if(err.errors.password) {
+          res.status(409).json({ err: err.errors.password.message });
+        } else {
+          res.status(500).json(err);
+        }
+      })
   }
 
   static login(req, res) {
     User
-     .findOne(req.body.email)
-     .then(user => {
-       if (user) {
-         if (regis.checkPassword(req.body.password, user.password)) {
-           let signUser = {
-              id: user._id,
-              email: user.email
-           };
+    .findOne({
+       email: req.body.email
+    })
+      .then(user => {
+        if (user) {
+          if (regis.checkPassword(req.body.password, user.password)) {
+            let signUser = {
+                id: user._id,
+                email: user.email
+            };
 
-           let token = jwt.sign(signUser);
-           res.status(200).json({
-             token: token,
-             _id: user._id,
-             email: user.email
-           })
-         }
-       } else {
-         res.status(500).json({ err: "User not found" });
-       }
-     })
-     .catch(err => {
-       res.status(500).json(err);
-     })
+            let token = jwt.sign(signUser);
+            res.status(200).json({
+              token: token,
+              _id: user._id,
+              email: user.email
+            })
+          }
+        } else {
+          res.status(500).json({ err: "User not found" });
+        }
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
   }
 
   static verify(req, res) {
     User
-     .findOneAndUpdate({
-       email: req.body.email,
-       verificationCode: req.body.verificationCode
-     }, {
-       $set: { isVerified: true }
-     })
-     .then(user => {
-       if(user) {
-         res.status(200).json(user);
-       } else {
-         res.status(400).json({ err: 'Verification code not match'})
-       }
-     })
-     .catch(err => {
-       res.status(500).json(err);
-     })
+      .findOneAndUpdate({
+        email: req.body.email,
+        verificationCode: req.body.verificationCode || verificationCode
+      }, {
+        $set: { isVerified: true }
+      })
+      .then(user => {
+        if(user) {
+          res.status(200).json(user);
+        } else {
+          res.status(400).json({ err: 'Verification code not match'})
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).json(err);
+      })
   }
 }
 

@@ -52,32 +52,31 @@ export default {
     addTomyFavorite (index) {
       this.addedIndex.push(index)
       this.$emit('myFavorite', this.projects[index])
+      this.$emit('counter', addedIndex.length)
     }
   },
 
   computed: {
     user () {
-      return this.store.state.projects.user
+      return this.$store.state.projects.data.user
     },
 
     projects () {
-      return this.$store.state.projects.projects
+      return this.$store.state.projects.data.projects
     }
   },
 
   watch: {
     $route (newVal) {
       this.isLoading = true
-      this.fetchProject(newVal.params.behanceId).then(
-        _ => (this.isLoading = false)
-      )
+      this.fetchProject(newVal.params.behanceId).then(() => {
+        this.isLoading = false
+      })
     }
   },
 
   mounted () {
-    this.fetchProject(this.$route.params.behanceId).then(
-      _ => (this.isLoading = false)
-    )
+    this.fetchProject(this.$route.params.behanceId)  
   }
 }
 </script>
